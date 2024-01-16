@@ -19,7 +19,7 @@ COPY admin/package.json admin/pnpm-lock.yaml ./admin/
 COPY admin ./admin
 
 # 安装 admin 依赖并构建
-RUN cd admin && pnpm update &&& pnpm add -D less && pnpm install && pnpm build
+RUN cd admin && pnpm update && pnpm add -D less && pnpm install && pnpm build
 
 # 您可以选择暴露端口，尽管在这种配置中可能不是必需的
 EXPOSE 3000 3001
