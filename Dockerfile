@@ -1,5 +1,5 @@
 # 使用 Node.js 官方镜像作为基础镜像
-FROM node:16
+FROM node:18
 
 # 设置工作目录
 WORKDIR /app
@@ -22,7 +22,7 @@ COPY admin ./admin
 RUN cd admin && pnpm update && pnpm add -D less && pnpm install && pnpm build
 
 # 您可以选择暴露端口，尽管在这种配置中可能不是必需的
-EXPOSE 3000 3001
+EXPOSE 9520
 
 # 设置容器的默认命令
-CMD ["echo", "Builds complete. Please use the /app/chat/dist and /app/admin/dist directories for deployment."]
+CMD ["pnpm", "start"]
