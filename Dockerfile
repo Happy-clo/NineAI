@@ -12,6 +12,9 @@ RUN pnpm update && pnpm install && pnpm build
 FROM node:18 AS admin-builder
 WORKDIR /app/admin
 
+# 安装 pnpm
+RUN npm install -g pnpm
+
 COPY admin/package.json admin/pnpm-lock.yaml ./
 RUN pnpm update && pnpm add -D less && pnpm install && pnpm build
 
