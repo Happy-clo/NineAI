@@ -25,6 +25,7 @@ WORKDIR /app
 # 安装 pnpm
 RUN npm install -g pnpm
 
+COPY . .
 COPY --from=chat-builder /app/chat ./chat
 COPY --from=admin-builder /app/admin ./admin
 
