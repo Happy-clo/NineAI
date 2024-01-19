@@ -5,7 +5,7 @@ WORKDIR /app/chat
 # 安装 pnpm
 RUN npm install -g pnpm
 
-COPY chat/package.json chat/pnpm-lock.yaml ./
+COPY ./chat .
 RUN pnpm update && pnpm install && pnpm build
 
 # 第二阶段：编译 admin 项目
@@ -15,7 +15,7 @@ WORKDIR /app/admin
 # 安装 pnpm
 RUN npm install -g pnpm
 
-COPY admin/package.json admin/pnpm-lock.yaml ./
+COPY ./admin .
 RUN pnpm update && pnpm add -D less && pnpm install && pnpm build
 
 # 第三阶段：将编译后的文件复制到新的镜像中
