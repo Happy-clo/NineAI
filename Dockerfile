@@ -1,27 +1,31 @@
-# 使用 Node.js 官方镜像作为基础镜像
-FROM node:18
+# 第一阶段：编译 chat 项目
+FROM node:18 AS chat-builder
+WORKDIR /app/chat
 
-# 设置工作目录
+# 安装 pnpm
+RUN npm install -g pnpm
+
+COPY chat/package.json chat/pnpm-lock.yaml ./
+RUN pnpm update && pnpm install && pnpm build
+
+# 第二阶段：编译 admin 项目
+FROM node:18 AS admin-builder
+WORKDIR /app/admin
+
+COPY admin/package.json admin/pnpm-lock.yaml ./
+RUN pnpm update && pnpm add -D less && pnpm install && pnpm build
+
+# 第三阶段：将编译后的文件复制到新的镜像中
+FROM node:18
 WORKDIR /app
 
 # 安装 pnpm
 RUN npm install -g pnpm
 
-# 复制 chat 项目文件
-COPY chat/package.json chat/pnpm-lock.yaml ./chat/
-COPY chat ./chat
+COPY --from=chat-builder /app/chat/dist ./chat/dist
+COPY --from=admin-builder /app/admin/dist ./admin/dist
 
-# 安装 chat 依赖并构建
-RUN cd chat && pnpm update && pnpm install && pnpm build
-
-# 复制 admin 项目文件
-COPY admin/package.json admin/pnpm-lock.yaml ./admin/
-COPY admin ./admin
-
-# 安装 admin 依赖并构建
-RUN cd admin && pnpm update && pnpm add -D less && pnpm install && pnpm build
-
-# 您可以选择暴露端口，尽管在这种配置中可能不是必需的
+# 暴露端口
 EXPOSE 9520
 
 # 设置容器的默认命令
