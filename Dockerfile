@@ -25,8 +25,8 @@ WORKDIR /app
 # 安装 pnpm
 RUN npm install -g pnpm
 
-COPY --from=chat-builder /app/chat/dist ./chat/dist
-COPY --from=admin-builder /app/admin/dist ./admin/dist
+COPY --from=chat-builder /app/chat ./chat
+COPY --from=admin-builder /app/admin ./admin
 
 # 暴露端口
 EXPOSE 9520
