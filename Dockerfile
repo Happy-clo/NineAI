@@ -18,6 +18,16 @@ RUN npm install -g pnpm
 COPY ./admin .
 RUN pnpm update && pnpm add -D less && pnpm install && pnpm build
 
+# 第二阶段：编译 admin 项目
+FROM node:18 AS service-builder
+WORKDIR /app/service
+
+# 安装 pnpm
+RUN npm install -g pnpm
+
+COPY ./service .
+RUN pnpm update && pnpm add -D less && pnpm install && pnpm build
+
 # 第三阶段：将编译后的文件复制到新的镜像中
 FROM node:18
 WORKDIR /app
@@ -26,6 +36,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY . .
+COPY --from=service-builder /app/service ./service
 COPY --from=chat-builder /app/chat ./chat
 COPY --from=admin-builder /app/admin ./admin
 
