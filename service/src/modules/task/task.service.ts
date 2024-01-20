@@ -39,9 +39,4 @@ export class TaskService {
     });
   }
 
-  /* 每小时检测一次授权 */
-  @Cron('0 0 */5 * *')
-  refreshBaiduAccesstoken() {
-    this.modelsService.refreshBaiduAccesstoken();
-  }
 }

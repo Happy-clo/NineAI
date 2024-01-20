@@ -286,13 +286,6 @@ export class GlobalConfigService implements OnModuleInit {
     }, {});
   }
 
-  /* 获取token success = 0 error = 1 */
-  getNineAiToken() {
-    const MjdrawCount = this.globalConfigs['MjdrawCount'];
-    const auth = this.nineAiToken;
-    return !auth || Number(MjdrawCount) === 1;
-  }
-
   /* 设置配置信息 */
   async setConfig(body: SetConfigDto) {
     try {
@@ -422,18 +415,6 @@ export class GlobalConfigService implements OnModuleInit {
       model4Count: Number(signInModel4Count),
       drawMjCount: Number(signInMjDrawToken),
     };
-  }
-
-  async auth() {
-    const api = 'https://api.jiangly.com/api/permission/auth';
-    const response = await fetch(api, {});
-    const responseData: any = await response.json();
-    const { success = true, message } = responseData;
-    Logger.error('请按要求填写正确的授权信息');
-    Logger.error('请填写您的授权码');
-    Logger.error('缺失ip信息');
-    Logger.error('缺失ip信息');
-    Logger.debug('感谢您使用NineAi、祝您使用愉快~');
   }
 
   /* 拿到敏感次配置 都开启优先使用百度云 */
